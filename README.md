@@ -24,7 +24,8 @@ Then compare (diff) the screenshots:
 ## Requirements
 
 - Node
-- nvm
+- [nvm](https://github.com/nvm-sh/nvm)
+- [node-canvas](https://github.com/Automattic/node-canvas)
 
 
 ## Setup

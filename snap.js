@@ -3,6 +3,7 @@
 const fs = require("fs")
 const chalk = require("chalk")
 const { chromium, devices } = require("playwright")
+const compareImages = require("resemblejs/compareImages")
 
 // Handle CLI inputs
 
@@ -77,7 +78,51 @@ function create_snapshots(profile_path, out_dir) {
 }
 
 function compare_snapshots(dir1, dir2, out_dir) {
-  console.log("Compare", dir1, dir2)
+  dir1 = add_trailing_slash(dir1)
+  dir2 = add_trailing_slash(dir2)
+  out_dir = add_trailing_slash(out_dir)
+
+  const dir1_snaps = fs.readdirSync(dir1)
+  for (const file_name of dir1_snaps) {
+
+    if (fs.existsSync(dir2 + file_name)) {
+      write_mismatch_file(file_name)
+    } else {
+      console.log(chalk.red("Not found ") + file_name)
+    }
+  }
+
+  async function write_mismatch_file(file_name) {
+    const threshold = 0
+    const options = {
+      output: {
+        errorColor: {
+          red: 255,
+          green: 0,
+          blue: 255,
+        },
+        errorType: "movement",
+        transparency: 0.3,
+        largeImageThreshold: 1200,
+        useCrossOrigin: false,
+        outputDiff: true,
+      },
+      scaleToSameSize: true,
+      ignore: "antialiasing",
+    }
+
+    const data = await compareImages(
+      fs.readFileSync(dir1 + file_name),
+      fs.readFileSync(dir2 + file_name),
+      options
+    )
+
+    if (data.rawMisMatchPercentage > threshold) {
+      console.log(chalk.gray("Mismatch ") + chalk.red(data.misMatchPercentage) + " " + file_name)
+      fs.mkdirSync(out_dir, { recursive: true })
+      fs.writeFileSync(out_dir + file_name, data.getBuffer())
+    }
+  }
 }
 
 function file_prefix_from_url(url) {
