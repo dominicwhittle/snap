@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
 const fs = require("fs")
+const chalk = require("chalk")
 const { chromium, devices } = require("playwright")
-// console.log(devices)
 
 // Handle CLI inputs
 
@@ -32,12 +32,19 @@ function create_snapshots(profile_path, out_dir) {
       for (const device_name of profile.devices || []) {
         contexts.push({
           name: device_name,
-          ...devices[device_name]
+          ...devices[device_name],
         })
       }
 
+      console.log(chalk.blue.bold("%s"), url)
+
       for (let ctx of contexts) {
-        console.log("📸", url, ctx.name)
+        console.log(
+          "☼ %s " + chalk.grey("%s * %s"),
+          ctx.name,
+          ctx.viewport.width,
+          ctx.viewport.height
+        )
 
         // Mix in base context rules
         if (profile.baseContext) {
@@ -56,8 +63,6 @@ function create_snapshots(profile_path, out_dir) {
           await page.addInitScript(script)
           // The script is evaluated after the document was created but before any of its scripts were run. This is useful to amend the JavaScript environment, e.g. to seed Math.random.
         }
-
-        // #todo await browserContext.addCookies([cookieObject1, cookieObject2]);
 
         await page.goto(url)
         await page.screenshot({
