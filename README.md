@@ -1,25 +1,69 @@
 # Snap
 
-@Todo -- what is this about?
+Snap is a general purpose URL screenshot and image comparison tool using [Playwright]() and [ResembleJS]().
 
-Snap using a profile and save screenshots to a directory:
+It has two modes: taking screenshots based on a list of URLs you write in a JSON file, and comparing like-named images between two folders.
 
+It was designed to be used as a visual regression testing tool that doesn't require CI integration. The primary use case is taking screenshots of all pages in your component library before and after you make code changes, then comparing them to highlight unintended visual differences before pushing your code.
+
+Because it's pretty lo-fi you can also use it in lo-fi ways, like comparing production site screenshots from before and after a code deployment, or peridoically recording screenshots for archival purposes.
+
+## Quickstart
+
+Snap images from URLs defined in a json file and save to a directory:
+
+```bash
+./snap.js <profile.json> <dest_folder>
 ```
+
+Compare images with the same file name in the specified folders. When images aren't identical, a mismatch image is saved to the dest folder.
+
+```bash
+./snap.js compare <image_folder> <image_folder_2> <dest_folder>
+```
+
+## Taking screenshots
+
+Screenshot configuration lives in a JSON file. At minimum this needs an array of `url` strings, and either an array of `devices` strings (`["iPhone 13 Pro", "Desktop Chrome"]`) or `contexts`. The latter allow you to create custom browser contexts. See [/profiles/sample.json](https://github.com/dominicwhittle/snap/blob/main/profiles/sample.json) for a template you can use.
+
+`baseContext` is useful for setting cookies/localStorage, or adding `httpCredentials` to access URLs behind authentication. All `devices` and `contexts` inherit from this `baseContext` if you use it. Configuration options are available [here](https://playwright.dev/docs/api/class-browser#browser-new-context).
+
+You might create multiple profiles based on your use cases, eg a `production.json` with URLs from your live site, and `components.json` with URLs from your component library.
+
+Snapping images and saving them to a directory looks like this:
+
+```bash
+./snap.js <profile.json> <dest_folder>
+```
+
+## Comparing images
+
+Snap compares images, creating a mismatch image that highlights the differences when images with the same name in the comparison folders are not found to be identical. A visual diff, if you like.
+
+```bash
+./snap.js compare <image_folder> <image_folder_2> <dest_folder>
+```
+
+The first dir of images is read and the second dir searched for images with matching names for comparison.
+
+Only images that a deemed to have a visual mismatch are written to the `dest_folder`.
+
+Snap will only compare images with the same filename.
+
+## Example
+
+Using snap as a visual regression testing tool while building a new feature on a branch in git.
+
+```bash
+# From branch main
+# Snap using a profile and save screenshots to a directory:
 ./snap.js profiles/sample.json snaps/main
+# Switch to your feature-xyz branch, do work etc
+# Snap using the same profile and save screenshots to a new directory:
+./snap.js profiles/sample.json snaps/feature-xyz
+# You now have two folders of images you can compare
+./snap.js compare snaps/main snaps/feature-xyz
 ```
-
-Typically you'd then switch to your feature branch or newer git commit and create a new set of screenshots:
-
-```
-./snap.js profiles/sample.json snaps/branch
-```
-
-Then compare (diff) the screenshots:
-
-```
-./snap.js compare snaps/main snaps/branch
-```
-
 
 ## Requirements
 
@@ -27,15 +71,11 @@ Then compare (diff) the screenshots:
 - [nvm](https://github.com/nvm-sh/nvm)
 - [node-canvas](https://github.com/Automattic/node-canvas)
 
-
-## Setup
+## Installation
 
 ```bash
 nvm use
 npm install
 ```
 
-## Notes
-
-- [ ] Add cookie data in profile, so that age gates etc can be skipped
-- [ ] Add htaccess password in profile, so that QA sites can be snapped
+If you hit a `Error: Cannot find module 'canvas'` problem, follow the installation instructions for node-canvas at the link above (eg on macOS use the homebrew command to install cairo and other system dependencies) then run npm install again.
