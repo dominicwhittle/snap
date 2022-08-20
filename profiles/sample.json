@@ -1,4 +1,7 @@
 {
+  "urls": [
+    "https://weekends.ws/"
+  ],
   "devices": [
     "iPhone 13 Mini",
     "iPhone 13 Pro",
@@ -39,8 +42,5 @@
   },
   "initScripts": [
     "Math.random = () => 42"
-  ],
-  "urls": [
-    "https://weekends.ws/"
   ]
 }
