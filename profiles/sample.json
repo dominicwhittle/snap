@@ -11,6 +11,14 @@
         "width": 1792,
         "height": 1120
       }
+    },
+    {
+      "name": "Retina 15\" laptop",
+      "deviceScaleFactor": 2,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
     }
   ],
   "baseContext": {
