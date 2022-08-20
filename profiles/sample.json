@@ -1,6 +1,13 @@
 {
-  "devices": ["iPhone 11", "iPad Pro 11"],
+  "devices": [
+    "iPhone 13 Mini",
+    "iPhone 13 Pro",
+    "Desktop Chrome"
+  ],
+  "initScripts": [
+    "localStorage.setItem('key', 'value')"
+  ],
   "urls": [
-    "https://google.com/"
+    "https://weekends.ws/"
   ]
 }

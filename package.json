@@ -9,6 +9,7 @@
   "author": "Dominic Whittle",
   "license": "MIT",
   "dependencies": {
-    "playwright": "^1.25.0"
+    "playwright": "^1.25.0",
+    "tld-extract": "^2.0.1"
   }
 }

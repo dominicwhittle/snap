@@ -35,3 +35,6 @@ npm install
 ```
 
 ## Notes
+
+- [ ] Add cookie data in profile, so that age gates etc can be skipped
+- [ ] Add htaccess password in profile, so that QA sites can be snapped
