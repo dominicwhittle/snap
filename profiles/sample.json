@@ -4,8 +4,33 @@
     "iPhone 13 Pro",
     "Desktop Chrome"
   ],
+  "contexts": [
+    {
+      "name": "Custom desktop",
+      "viewport": {
+        "width": 1792,
+        "height": 1120
+      }
+    }
+  ],
+  "baseContext": {
+    "reducedMotion": "reduce",
+    "storageState": {
+      "origins": [
+        {
+          "origin": "https://archierose.com.au/",
+          "localStorage": [
+            {
+              "name": "ageGateAR",
+              "value": "passed"
+            }
+          ]
+        }
+      ]
+    }
+  },
   "initScripts": [
-    "localStorage.setItem('key', 'value')"
+    "Math.random = () => 42"
   ],
   "urls": [
     "https://weekends.ws/"
