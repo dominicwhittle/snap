@@ -1,0 +1,14 @@
+{
+  "name": "snap",
+  "version": "1.0.0",
+  "description": "Screen shot and visual comparison tool",
+  "main": "snap.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "playwright": "^1.25.0"
+  }
+}
