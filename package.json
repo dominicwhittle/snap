@@ -1,13 +1,13 @@
 {
   "name": "snap",
   "version": "1.0.0",
-  "description": "Screen shot and visual comparison tool",
+  "description": "Screenshot and visual comparison tool",
   "main": "snap.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Dominic Whittle",
+  "license": "MIT",
   "dependencies": {
     "playwright": "^1.25.0"
   }
