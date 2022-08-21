@@ -2,11 +2,11 @@
 
 Snap is a general purpose URL screenshot and image comparison tool using [Playwright]() and [ResembleJS]().
 
-It has two modes: taking screenshots based on a list of URLs you write in a JSON file, and comparing like-named images between two folders.
+It has two modes: taking full page screenshots of URLs you specify in a JSON file, and comparing like-named images between two folders.
 
-It was designed to be used as a visual regression testing tool that doesn't require CI integration. The primary use case is taking screenshots of all pages in your component library before and after you make code changes, then comparing them to highlight unintended visual differences before pushing your code.
+It was designed to be used as a visual regression testing tool that doesn't require integration with a Continuous Integration environment. The primary use case is taking screenshots of all URLs in your component library before and after you make code changes, then comparing them to highlight unintended visual differences, giving you confidence to push your code.
 
-Because it's pretty lo-fi you can also use it in lo-fi ways, like comparing production site screenshots from before and after a code deployment, or peridoically recording screenshots for archival purposes.
+Because it's pretty lo-fi you can also use it in lo-fi ways, like comparing production site URL screenshots from before and after a code deployment, or peridoically recording screenshots for archival purposes.
 
 ## Quickstart
 
@@ -62,7 +62,7 @@ Using snap as a visual regression testing tool while building a new feature on a
 # Snap using the same profile and save screenshots to a new directory:
 ./snap.js profiles/sample.json snaps/feature-xyz
 # You now have two folders of images you can compare
-./snap.js compare snaps/main snaps/feature-xyz
+./snap.js compare snaps/main snaps/feature-xyz snaps/compare-main-feature-xyz
 ```
 
 ## Requirements
