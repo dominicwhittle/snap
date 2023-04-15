@@ -9,6 +9,7 @@
   "author": "Dominic Whittle",
   "license": "MIT",
   "dependencies": {
+    "canvas": "^2.9.0",
     "chalk": "^4.1.2",
     "playwright": "^1.25.0",
     "resemblejs": "^4.1.0",
