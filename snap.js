@@ -25,17 +25,17 @@ function create_snapshots(profile_path, out_dir) {
   ;(async () => {
     const browser = await chromium.launch()
 
+    // Merge defined contexts with Playwright included contexts from device names
+    const contexts = profile.contexts || []
+    for (const device_name of profile.devices || []) {
+      contexts.push({
+        name: device_name,
+        ...devices[device_name],
+      })
+    }
+
     for (const url of profile.urls) {
       let file_prefix = file_prefix_from_url(url)
-
-      // Merge defined contexts with Playwright included contexts from device names
-      const contexts = profile.contexts || []
-      for (const device_name of profile.devices || []) {
-        contexts.push({
-          name: device_name,
-          ...devices[device_name],
-        })
-      }
 
       console.log(chalk.blue.bold("%s"), url)
 
@@ -84,7 +84,6 @@ function compare_snapshots(dir1, dir2, out_dir) {
 
   const dir1_snaps = fs.readdirSync(dir1)
   for (const file_name of dir1_snaps) {
-
     if (fs.existsSync(dir2 + file_name)) {
       write_mismatch_file(file_name)
     } else {
@@ -118,7 +117,12 @@ function compare_snapshots(dir1, dir2, out_dir) {
     )
 
     if (data.rawMisMatchPercentage > threshold) {
-      console.log(chalk.gray("Mismatch ") + chalk.red(data.misMatchPercentage) + " " + file_name)
+      console.log(
+        chalk.gray("Mismatch ") +
+          chalk.red(data.misMatchPercentage) +
+          " " +
+          file_name
+      )
       fs.mkdirSync(out_dir, { recursive: true })
       fs.writeFileSync(out_dir + file_name, data.getBuffer())
     }
