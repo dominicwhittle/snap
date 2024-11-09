@@ -12,6 +12,7 @@
     "canvas": "^2.9.0",
     "chalk": "^4.1.2",
     "playwright": "^1.25.0",
+    "puppeteer": "^23.7.1",
     "resemblejs": "^4.1.0",
     "tld-extract": "^2.0.1"
   }

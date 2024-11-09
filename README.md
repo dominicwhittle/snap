@@ -79,3 +79,12 @@ npm install
 ```
 
 If you hit a `Error: Cannot find module 'canvas'` problem, follow the installation instructions for node-canvas at the link above (eg on macOS use the homebrew command to install cairo and other system dependencies) then run npm install again.
+
+---
+
+@todo nvm
+@todo npm install
+
+chmod u+x snap2.js
+
+@todo "Google Chrome for Testing" macOS desktop notifications
