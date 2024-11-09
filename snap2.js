@@ -8,9 +8,12 @@ const fs = require("node:fs")
 const profile = {
   devices: [
     {
-      name: "laptop",
       width: 1440,
       height: 1024,
+    },
+    {
+      width: 375,
+      height: 667,
     },
   ],
   urls: [
@@ -20,31 +23,37 @@ const profile = {
   ],
 }
 
+
 ;(async () => {
+  console.log("📷 Snap")
+  console.log("https://github.com/dominicwhittle/snap")
+
+  const dateDir = dateDirStr()
   const browser = await puppeteer.launch()
   const page = await browser.newPage()
 
   for await (const url of profile.urls) {
-    for await (const { name, width, height } of profile.devices) {
+    for await (const { width, height } of profile.devices) {
+      const logMsg = `📸  ${url} ${width}x${height}`
+      console.time(logMsg)
+
       await page.setViewport({ width, height })
       await page.emulateMediaFeatures([
         { name: "prefers-reduced-motion", value: "reduce" },
       ])
-      console.time(url)
       await page.goto(url, { waitUntil: "networkidle2" })
 
-      // Create folder for snapshots from url
-      const domain = getDomainFromURL(url)
-      if (!fs.existsSync(domain)) {
-        fs.mkdirSync(domain, { recursive: true })
+      const dir = `snaps/${getDomainFromURL(url)}-${dateDir}`
+
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true })
       }
-      // @todo cerate subdir for timestamp?
       await page.screenshot({
-        path: "snaps/" + getWritablePathFromURL(url) + ".png",
+        path: `${dir}/${getWritablePathFromURL(url)}.${width}x${height}.png`,
         fullPage: true,
         type: "png",
       })
-      console.timeEnd(url)
+      console.timeEnd(logMsg)
     }
   }
 
@@ -89,4 +98,20 @@ function addTrailingSlash(str) {
 function removeTrailingSlash(str) {
   if (!str.endsWith("/")) return str
   return str.slice(0, -1)
+}
+
+function dateDirStr() {
+  const d = new Date()
+  return (
+    [
+      d.getFullYear(),
+      (d.getMonth() + 1).toString().padStart(2, "0"),
+      (d.getDate() + 1).toString().padStart(2, "0"),
+    ].join("-") +
+    "T" +
+    [
+      (d.getHours() + 1).toString().padStart(2, "0"),
+      (d.getMinutes() + 1).toString().padStart(2, "0"),
+    ].join("")
+  )
 }
