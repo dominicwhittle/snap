@@ -1,46 +1,18 @@
 {
-  "urls": [
-    "https://archierose.com.au/"
-  ],
   "devices": [
-    "iPhone 13 Mini",
-    "iPhone 13 Pro",
-    "Desktop Chrome"
-  ],
-  "contexts": [
     {
-      "name": "Custom desktop",
-      "viewport": {
-        "width": 1792,
-        "height": 1120
-      }
+      "width": 1440,
+      "height": 1024
     },
     {
-      "name": "Retina 15\" laptop",
-      "deviceScaleFactor": 2,
-      "viewport": {
-        "width": 1440,
-        "height": 900
-      }
+      "width": 375,
+      "height": 667
     }
   ],
-  "baseContext": {
-    "reducedMotion": "reduce",
-    "storageState": {
-      "origins": [
-        {
-          "origin": "https://archierose.com.au/",
-          "localStorage": [
-            {
-              "name": "ageGateAR",
-              "value": "passed"
-            }
-          ]
-        }
-      ]
-    }
-  },
-  "initScripts": [
-    "Math.random = () => 42"
+  "urls": [
+    "/",
+    "/blog/",
+    "/blog/example-blog-slug",
+    "/about-us"
   ]
 }

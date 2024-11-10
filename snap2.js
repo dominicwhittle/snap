@@ -7,38 +7,32 @@ import fs from "node:fs"
 import { dateDirStr } from "./lib/dateDirStr.js"
 import { getWritablePathFromURL } from "./lib/getWritablePathFromURL.js"
 import { getDomainFromURL } from "./lib/getDomainFromURL.js"
+import { domainToURL } from "./lib/domainToURL.js"
 
-const profile = {
-  devices: [
-    {
-      width: 1440,
-      height: 1024,
-    },
-    {
-      width: 375,
-      height: 667,
-    },
-  ],
-  urls: [
-    "https://www.upguard.com",
-    "https://www.upguard.com/blog/",
-    "https://www.upguard.com/blog/2024-u-s-election-integrity-threats-not-just-data-leaks-and-hacks",
-  ],
-}
+// Handle CLI inputs
+// ./snap.js example.com profiles/profile.json
+const [, , ...args] = process.argv
+const baseURL = domainToURL(args[0])
+const profilePath = args[1]
+
+// Read profile JSON
+const profile = JSON.parse(fs.readFileSync(profilePath))
+
 
 
 ;(async () => {
-  console.log("📷 Snap")
+  console.log("📷 Snap:", baseURL)
   console.log("https://github.com/dominicwhittle/snap")
 
   const dateDir = dateDirStr()
   const browser = await puppeteer.launch()
   const page = await browser.newPage()
 
-  for await (const url of profile.urls) {
+  for await (const relativeURL of profile.urls) {
     for await (const { width, height } of profile.devices) {
-      const logMsg = `📸  ${url} ${width}x${height}`
-      console.time(logMsg)
+      const url = baseURL + relativeURL
+      const consoleMsg = `📸  ${relativeURL} ${width}x${height}`
+      console.time(consoleMsg)
 
       await page.setViewport({ width, height })
       await page.emulateMediaFeatures([
@@ -46,17 +40,20 @@ const profile = {
       ])
       await page.goto(url, { waitUntil: "networkidle2" })
 
+      // @todo wait for lazy loaded images
+
       const dir = `snaps/${getDomainFromURL(url)}-${dateDir}`
 
       if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir, { recursive: true })
       }
+
       await page.screenshot({
         path: `${dir}/${getWritablePathFromURL(url)}.${width}x${height}.png`,
         fullPage: true,
         type: "png",
       })
-      console.timeEnd(logMsg)
+      console.timeEnd(consoleMsg)
     }
   }
 
