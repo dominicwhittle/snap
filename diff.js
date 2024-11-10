@@ -6,28 +6,20 @@ import { PNG } from "pngjs"
 import pixelmatch from "pixelmatch"
 import { dateDirStr } from "./lib/dateDirStr.js"
 
-// const img1 = PNG.sync.read(fs.readFileSync("snaps/a/test.png"))
-// const img2 = PNG.sync.read(fs.readFileSync("snaps/b/test.png"))
-// const { width, height } = img1
-// const diff = new PNG({ width, height })
-
-// pixelmatch(img1.data, img2.data, diff.data, width, height, { threshold: 0.1 })
-
-// fs.writeFileSync("diffs/diff.png", PNG.sync.write(diff))
-
-// ;(() => {
 // Handle CLI inputs
 // ./diff.js /snaps/example.com-YY_MM_DD /snaps/staging.example.com-YY_MM_DD
 const [, , ...args] = process.argv
 const dir1 = args[0]
 const dir2 = args[1]
 
-const dir1Imgs = fs.readdirSync(dir1)
-const dir2Imgs = fs.readdirSync(dir2)
-
 // @todo compare folders for missing images
 
 const dateDir = dateDirStr()
+const dir1Imgs = fs.readdirSync(dir1)
+const dir2Imgs = fs.readdirSync(dir2)
+
+console.log("Command click to open:")
+console.log(`file://${process.cwd()}/diffs/${dateDir}/`)
 
 for (const img1name of dir1Imgs) {
   if (!dir2Imgs.includes(img1name)) {
@@ -58,18 +50,17 @@ for (const img1name of dir1Imgs) {
       threshold: 0.1,
     }
   )
-  pixelmatch(img1.data, img2.data, diff.data, width, height, {
-    threshold: 0.1,
-  })
 
-  // console.log(diff)
+  if (difference) {
+    console.log(`🩻`, img1name)
+    // console.log(`🩻 ${difference} pixels differ`, img1name)
 
-  console.log(`${difference} pixels differ`, img1name)
-
-  if (!fs.existsSync("diffs")) {
-    fs.mkdirSync("diffs", { recursive: true })
+    const dir = path.join("diffs", dateDir)
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true })
+    }
+    fs.writeFileSync(path.join(dir, img1name), PNG.sync.write(diff))
   }
-  fs.writeFileSync(path.join("diffs", img1name), PNG.sync.write(diff))
 }
 
 function resizeImage(img, dimensions) {
