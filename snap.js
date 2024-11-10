@@ -6,6 +6,7 @@ import { dateDirStr } from "./lib/dateDirStr.js"
 import { getWritablePathFromURL } from "./lib/getWritablePathFromURL.js"
 import { getDomainFromURL } from "./lib/getDomainFromURL.js"
 import { domainToURL } from "./lib/domainToURL.js"
+import { scrollToBottom } from "./lib/scrollToBottom.js"
 
 // Handle CLI inputs
 // ./snap.js example.com profiles/profile.json
@@ -36,17 +37,15 @@ const profile = JSON.parse(fs.readFileSync(profilePath))
       ])
       await page.goto(url, { waitUntil: "networkidle2" })
 
-      // @todo wait for lazy loaded images
+      // Scoll page and wait for lazy loaded images
+      await page.evaluate(scrollToBottom, { viewportHeight: height })
+      await page.waitForNetworkIdle()
 
+      // Take screenshot
       const dir = `snaps/${getDomainFromURL(url)}-${dateDir}`
-
-      if (!fs.existsSync(dir)) {
-        fs.mkdirSync(dir, { recursive: true })
-      }
-
+      if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true })
       const imgName =
         (getWritablePathFromURL(url) || "_HOME_") + `.${width}x${height}.png`
-
       await page.screenshot({
         path: `${dir}/${imgName}`,
         fullPage: true,
