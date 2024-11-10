@@ -10,8 +10,8 @@ import { domainToURL } from "./lib/domainToURL.js"
 // Handle CLI inputs
 // ./snap.js example.com profiles/profile.json
 const [, , ...args] = process.argv
-const baseURL = domainToURL(args[0])
-const profilePath = args[1]
+const profilePath = args[0]
+const baseURL = domainToURL(args[1])
 
 // Read profile JSON
 const profile = JSON.parse(fs.readFileSync(profilePath))
