@@ -1,9 +1,12 @@
 #!/usr/bin/env node
 // https://nodejs.org/en/learn/command-line/run-nodejs-scripts-from-the-command-line
 
-const puppeteer = require("puppeteer")
-const path = require("node:path")
-const fs = require("node:fs")
+import puppeteer from "puppeteer"
+// import path from "node:path"
+import fs from "node:fs"
+import { dateDirStr } from "./lib/dateDirStr.js"
+import { getWritablePathFromURL } from "./lib/getWritablePathFromURL.js"
+import { getDomainFromURL } from "./lib/getDomainFromURL.js"
 
 const profile = {
   devices: [
@@ -67,51 +70,3 @@ const profile = {
 //     elements[i].parentNode.removeChild(elements[i])
 //   }
 // }, div_selector_to_remove)
-
-function parseURLStr(url) {
-  url = removeStartingStr(url, "http://")
-  url = removeStartingStr(url, "https://")
-  url = removeStartingStr(url, "www.")
-  url = removeTrailingSlash(url)
-  const [domain, ...paths] = url.split("/")
-  return { domain, paths }
-}
-
-function getDomainFromURL(url) {
-  return parseURLStr(url).domain
-}
-
-function getWritablePathFromURL(url) {
-  const { domain, paths } = parseURLStr(url)
-  return encodeURIComponent([domain, paths.join("/")].filter(Boolean).join("/"))
-}
-
-function removeStartingStr(str, strToRemove) {
-  if (!str.startsWith(strToRemove)) return str
-  return str.slice(strToRemove.length)
-}
-
-function addTrailingSlash(str) {
-  if (str.endsWith("/")) return str
-  return str + "/"
-}
-function removeTrailingSlash(str) {
-  if (!str.endsWith("/")) return str
-  return str.slice(0, -1)
-}
-
-function dateDirStr() {
-  const d = new Date()
-  return (
-    [
-      d.getFullYear(),
-      (d.getMonth() + 1).toString().padStart(2, "0"),
-      (d.getDate() + 1).toString().padStart(2, "0"),
-    ].join("-") +
-    "T" +
-    [
-      (d.getHours() + 1).toString().padStart(2, "0"),
-      (d.getMinutes() + 1).toString().padStart(2, "0"),
-    ].join("")
-  )
-}

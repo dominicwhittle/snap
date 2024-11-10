@@ -82,9 +82,22 @@ If you hit a `Error: Cannot find module 'canvas'` problem, follow the installati
 
 ---
 
-@todo nvm
-@todo npm install
+@todo manually install nvm
+
+```bash
+nvm use
+npm install
+```
 
 chmod u+x snap2.js
+
+```bash
+./snap.js example.com profiles/profile.json
+```
+
+
+```bash
+./compare.js snaps/example.com-YYYY-MM-DD snaps/staging.example.com-YYYY-MM-DD
+```
 
 @todo "Google Chrome for Testing" macOS desktop notifications
