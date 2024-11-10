@@ -3,3 +3,4 @@ node_modules
 /profiles/*
 !/profiles/sample.json
 /snaps
+/diffs

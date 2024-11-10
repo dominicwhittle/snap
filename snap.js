@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 import puppeteer from "puppeteer"
-// import path from "node:path"
 import fs from "node:fs"
 import { dateDirStr } from "./lib/dateDirStr.js"
 import { getWritablePathFromURL } from "./lib/getWritablePathFromURL.js"
@@ -16,8 +15,6 @@ const profilePath = args[1]
 
 // Read profile JSON
 const profile = JSON.parse(fs.readFileSync(profilePath))
-
-
 
 ;(async () => {
   console.log("📷 Snap:", baseURL)
@@ -47,8 +44,11 @@ const profile = JSON.parse(fs.readFileSync(profilePath))
         fs.mkdirSync(dir, { recursive: true })
       }
 
+      const imgName =
+        (getWritablePathFromURL(url) || "_HOME_") + `.${width}x${height}.png`
+
       await page.screenshot({
-        path: `${dir}/${getWritablePathFromURL(url)}.${width}x${height}.png`,
+        path: `${dir}/${imgName}`,
         fullPage: true,
         type: "png",
       })

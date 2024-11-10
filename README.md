@@ -89,7 +89,8 @@ nvm use
 npm install
 ```
 
-chmod u+x snap2.js
+chmod u+x snap.js
+chmod u+x diff.js
 
 ```bash
 ./snap.js example.com profiles/profile.json
