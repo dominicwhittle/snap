@@ -62,7 +62,7 @@ const baseURL = domainToURL(args[1])
       await sleep(100)
 
       // Take screenshot
-      const dir = `snaps/${getDomainFromURL(url)}-${dateDir}`
+      const dir = `screenshots/${getDomainFromURL(url)}-${dateDir}`
       if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true })
       const imgName =
         (getWritablePathFromURL(url) || "_home") + `.${width}x${height}.png`
