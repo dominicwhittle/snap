@@ -15,13 +15,12 @@ export const functions = [
   `$('[data-el="topbanners"]').remove()`,
   `$('#usercentrics-root').remove()`,
   `const $style = document.createElement("style")
-    $style.innerHTML = \`@media (prefers-reduced-motion: reduce) {
-        * {
-          animation-duration: 0.01ms !important;
-          animation-iteration-count: 1 !important;
-          transition-duration: 0.01ms !important;
-          scroll-behavior: auto !important;
-        }
+    $style.innerHTML = \`
+      * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
       }\`
     $("head").append($style)
   `,
