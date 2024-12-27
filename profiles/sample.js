@@ -21,7 +21,6 @@ export const functions = [
           animation-iteration-count: 1 !important;
           transition-duration: 0.01ms !important;
           scroll-behavior: auto !important;
-          color: red;
         }
       }\`
     $("head").append($style)
