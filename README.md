@@ -14,7 +14,7 @@ Because it's pretty lo-fi you can also use it in lo-fi ways, like comparing prod
 Snap images from URLs defined in a json file and save to a directory:
 
 ```bash
-./snap.js profiles/profile.json example.com
+./snap.js ./profiles/sample.js example.com
 ```
 
 Compare like-named images in the specified folders. When images aren't identical, a mismatch image is saved to a diff folder.
@@ -47,4 +47,16 @@ If you hit a permissions error, you'll need to set `snap.js` and `diff.js to be 
 ```bash
 chmod u+x snap.js
 chmod u+x diff.js
+```
+
+## Custom functions
+
+Custom functions are arbitrary JavaScript you write that run on every page. Use these to hide elements and make any DOM changes that make your life easier.
+
+They are each called individually and within an immediately invoked function expression so that any variables ect are contained within a closure.
+This closure scope gives you `$` and `$$` to make querying a little easier.
+
+```javascript
+const $ = (s) => document.querySelector(s);
+const $$ = (s) => Array.from(document.querySelectorAll(s));
 ```
